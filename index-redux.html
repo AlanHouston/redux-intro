@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Redux basic example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.1/redux.js"></script>
+  </head>
+  <body>
+    <div>
+      <p>
+        Clicked: <span id="value">0</span> times
+        <!--
+          //part 5
+          Something has to trigger the change in data
+          tshirts have arrived
+          the count has has increased by one
+          this can be any event
+        -->
+        <button id="increment" onclick="increment()">+</button>
+        <button id="decrement" onclick="decrement()">-</button>
+      </p>
+    </div>
+    <script>
+
+      function increment(){
+        //debug dispatch to see what is happening
+        store.dispatch({ type: 'INCREMENT' })
+      }
+      function decrement(){
+        store.dispatch({ type: 'DECREMENT' })
+      }
+      //we have to decide what data our app needs that will be used by many things (components if react)
+      //all of this data must be contained within one object with a key/value 
+      //key is the name of the data "tshirts", value is the actually stuff
+      //step 1
+      let state = {
+        //in this extremely simple example we are just saying that there is a counter
+        //does anyone care what the current count is? if it changes to 1 does anyone care ? hello?
+        counter:0,
+        //videoGames:[],
+        //tshirts:[],
+        //shoes:[]
+      }
+      //step 2
+      //this is a redux specific thing. 
+      //for every key in the state object, you need to make a function with the same name
+      //it will always take 2 parameters, state, action
+      //state = the value from the state object key of the same name counter = counter
+      //action = the message object that was dispatched
+      //when you dispatch a message, this function is what will receive the message
+      // it then needs to decide how the state should be altered
+      //whatever is returned from this function is what will be put into the value of the key in the state object
+      //after that is done all subscribers are notified that there is new data
+
+      function counter(state, action) {
+        if (typeof state === 'undefined') {
+          return 0
+        }
+
+        switch (action.type) {
+          case 'INCREMENT':
+            return state + 1
+          case 'DECREMENT':
+            return state - 1
+          default:
+            return state
+        }
+      }
+      //this is a weird thing we need to do, we don't really need to understand it, just do it
+      //step 2.5
+      let reducers =  Redux.combineReducers({
+        counter//,whatever other reducers
+      })
+      //step 3
+      //we need to create a store, the store holds all the data. like a real life store
+      var store = Redux.createStore(reducers,state)
+      
+      //step 4
+      //something has to subscribe to the publisher (store)
+      //that something will always be a function
+      //the function will be called when some data is changed
+      //hey store tell me when the data changed please
+      store.subscribe(render)
+     
+
+      function render () {
+        //okay I am telling you that the data is here, do something with it if you want
+        //getState() === state === {counter:0}
+        let whatDoWeWant = store.getState().counter;
+        //what do you want to do with it. Nothing special just show it in the webpage
+        var valueEl = document.getElementById('value')
+        valueEl.innerHTML = whatDoWeWant
+      }
+
+
+    
+    </script>
+  </body>
+</html>
