@@ -38,7 +38,7 @@
         counter:0,
         //videoGames:[],
         //tshirts:[],
-        //shoes:[]
+        shoes:[]
       }
       //step 2
       //this is a redux specific thing. 
@@ -50,6 +50,13 @@
       // it then needs to decide how the state should be altered
       //whatever is returned from this function is what will be put into the value of the key in the state object
       //after that is done all subscribers are notified that there is new data
+
+      function shoes(state, action){
+        if (typeof state === 'undefined') {
+          return [];
+        }
+        return state;
+      }
 
       function counter(state, action) {
         if (typeof state === 'undefined') {
@@ -68,7 +75,7 @@
       //this is a weird thing we need to do, we don't really need to understand it, just do it
       //step 2.5
       let reducers =  Redux.combineReducers({
-        counter//,whatever other reducers
+        counter, shoes//,whatever other reducers
       })
       //step 3
       //we need to create a store, the store holds all the data. like a real life store
